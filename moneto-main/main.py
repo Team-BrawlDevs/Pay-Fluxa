@@ -9,7 +9,7 @@ from emi_engine import adjust_emi
 from credit_index import compute_credit_index
 from investment_engine import investment_advice
 from explainability_engine import generate_explanations
-
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 @app.post("/evaluate")
@@ -43,3 +43,10 @@ def evaluate(data: dict):
         "investment_suggestion": investment["allocation"],
         "explanation": explanations
     }
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
