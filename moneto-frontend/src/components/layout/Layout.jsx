@@ -4,11 +4,23 @@ import Navbar from "./Navbar";
 export default function Layout({ children }) {
   return (
     <div className="flex">
+
+      {/* SIDEBAR */}
       <Sidebar />
-      <div className="ml-64 w-full min-h-screen">
-        <Navbar />
-        <div className="flex-1 bg-gray-50 p-6 overflow-y-auto"><div className="p-8">{children}</div></div>
-        
+
+      {/* MAIN AREA */}
+      <div className="ml-64 flex flex-col min-h-screen w-full bg-gray-50">
+
+        {/* NAVBAR (sticky) */}
+        <div className="sticky top-0 z-40">
+          <Navbar />
+        </div>
+
+        {/* PAGE CONTENT */}
+        <div className="flex-1 p-8 overflow-y-auto">
+          {children}
+        </div>
+
       </div>
     </div>
   );

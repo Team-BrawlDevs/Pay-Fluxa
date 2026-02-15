@@ -1,55 +1,113 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-10 rounded-2xl shadow-md w-96"
-      >
-        <h2 className="text-2xl font-bold mb-6">Login</h2>
+    <div className="min-h-screen flex">
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-4 p-3 border rounded-lg"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      {/* ===== LEFT BRAND PANEL ===== */}
+      <div className="hidden md:flex w-1/2 bg-primary text-white flex-col justify-center px-16">
+        <h1 className="text-4xl font-bold leading-tight">
+          Welcome Back.
+          <br />
+          <span className="opacity-80">
+            Continue Your Financial Journey.
+          </span>
+        </h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-6 p-3 border rounded-lg"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <p className="mt-6 text-white/80 max-w-md">
+          Log in to monitor your financial stability,
+          review risk projections, and stay ahead
+          of potential stress points.
+        </p>
+      </div>
 
-        <button
-          type="submit"
-          className="w-full bg-primary text-white py-3 rounded-xl"
+      {/* ===== RIGHT FORM PANEL ===== */}
+      <div className="flex flex-1 items-center justify-center bg-gray-50 px-6">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md"
         >
-          Login
-        </button>
-      </form>
+          <h2 className="text-2xl font-bold mb-2">
+            Login
+          </h2>
+
+          <p className="text-gray-500 mb-6 text-sm">
+            Access your financial dashboard
+          </p>
+
+          {error && (
+            <div className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+              {error}
+            </div>
+          )}
+
+          <div className="mb-4">
+            <label className="text-sm text-gray-600">
+              Email Address
+            </label>
+            <input
+              type="email"
+              required
+              className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="text-sm text-gray-600">
+              Password
+            </label>
+            <input
+              type="password"
+              required
+              className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
+          >
+            Login
+          </button>
+
+          {/* ===== SIGNUP LINK ===== */}
+          <p className="text-sm text-gray-500 mt-6 text-center">
+            Don’t have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-primary font-medium hover:underline"
+            >
+              Create one
+            </Link>
+          </p>
+
+        </form>
+      </div>
+
     </div>
   );
 }

@@ -6,7 +6,7 @@ export default function Sidebar() {
 
   return (
     <div className="w-64 h-screen bg-darkbg text-white fixed p-6">
-      <h1 className="text-2xl font-bold mb-10 text-primary">Moneto</h1>
+      <h1 className="text-2xl font-bold mb-10 text-primary">PayFluxa</h1>
 
       <nav className="space-y-4">
         <NavLink to="/dashboard" className={linkStyle}>
