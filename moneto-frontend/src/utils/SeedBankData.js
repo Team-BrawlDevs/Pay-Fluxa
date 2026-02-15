@@ -1,35 +1,54 @@
 import { db } from "../lib/firebase";
 import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import simulationProfile from "../data/simulationProfile.json";
 
 export async function seedBankData(user) {
-  // Accounts
+  const profile = simulationProfile;
+
+  // 1️⃣ Accounts (derived from buffer_savings)
   await setDoc(doc(db, "users", user.uid, "accounts", "checking"), {
-    balance: 82000,
+    balance: profile.monthly_income,
     type: "checking"
   });
 
   await setDoc(doc(db, "users", user.uid, "accounts", "savings"), {
-    balance: 45000,
+    balance: profile.buffer_savings,
     type: "savings"
   });
 
-  // Loan
+  // 2️⃣ Loan
   await setDoc(doc(db, "users", user.uid, "loans", "home_loan"), {
-    emi: 50000,
-    interest_rate: 0.12,
-    remaining_tenure_months: 24
+    emi: profile.current_emi,
+    interest_rate: profile.interest_rate,
+    remaining_tenure_months: profile.remaining_tenure_months
   });
 
-  // Transactions (last 3 months simulation)
-  const txns = [
-    { amount: 60000, type: "credit", category: "salary" },
-    { amount: 15000, type: "debit", category: "rent" },
-    { amount: 8000, type: "debit", category: "groceries" },
-    { amount: 5000, type: "debit", category: "utilities" },
-    { amount: 4000, type: "debit", category: "entertainment" }
+  // 3️⃣ Transactions simulation (derived from profile)
+
+  const transactions = [
+    {
+      amount: profile.monthly_income,
+      type: "credit",
+      category: "salary"
+    },
+    {
+      amount: profile.essential_expenses,
+      type: "debit",
+      category: "essential"
+    },
+    {
+      amount: profile.non_essential_expenses,
+      type: "debit",
+      category: "non_essential"
+    },
+    {
+      amount: profile.current_emi,
+      type: "debit",
+      category: "emi"
+    }
   ];
 
-  for (let txn of txns) {
+  for (let txn of transactions) {
     await addDoc(
       collection(db, "users", user.uid, "transactions"),
       {
@@ -38,4 +57,13 @@ export async function seedBankData(user) {
       }
     );
   }
+
+  // 4️⃣ Store risk profile
+  await setDoc(
+    doc(db, "users", user.uid),
+    { risk_profile: profile.risk_profile },
+    { merge: true }
+  );
+
+  console.log("Bank data seeded from simulationProfile.json");
 }

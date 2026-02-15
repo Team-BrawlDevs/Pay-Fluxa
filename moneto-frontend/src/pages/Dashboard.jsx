@@ -116,6 +116,20 @@ export default function Dashboard() {
   derivedProfile.essential_expenses -
   derivedProfile.non_essential_expenses -
   derivedProfile.current_emi;
+  const formatMonthYear = (monthOffset) => {
+  const today = new Date();
+  const targetDate = new Date(
+    today.getFullYear(),
+    today.getMonth() + monthOffset,
+    1
+  );
+
+  return targetDate.toLocaleString("en-US", {
+    month: "short",
+    year: "numeric"
+  });
+};
+
 
   return (
   <Layout>
@@ -154,13 +168,14 @@ export default function Dashboard() {
       </div>
       <div className="bg-white p-5 rounded-2xl shadow mb-8 flex justify-between items-center">
   <div>
-    <p className="text-gray-500 text-sm">12-Month Outlook</p>
-    <p className="text-xl font-semibold mt-1">
-      {assessment.expected_stress_month
-        ? `Risk in ${assessment.expected_stress_month}`
-        : "Low Risk Projection"}
-    </p>
-  </div>
+  <p className="text-gray-500 text-sm">12-Month Outlook</p>
+
+  <p className="text-xl font-semibold mt-1">
+    {assessment.expected_stress_month
+      ? `Risk in ${formatMonthYear(assessment.expected_stress_month)}`
+      : "Low Risk Projection"}
+  </p>
+</div>
 
   <div className={`px-3 py-1 rounded-full text-xs font-medium ${
     assessment.stress_probability > 0.5

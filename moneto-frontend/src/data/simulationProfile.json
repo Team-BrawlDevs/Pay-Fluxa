@@ -1,0 +1,12 @@
+{
+  "user_id": "U_STABLE_001",
+  "monthly_income": 80000,
+  "income_volatility": 2000,
+  "essential_expenses": 30000,
+  "non_essential_expenses": 10000,
+  "current_emi": 15000,
+  "interest_rate": 0.12,
+  "remaining_tenure_months": 24,
+  "buffer_savings": 100000,
+  "risk_profile": "moderate"
+}
