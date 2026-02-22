@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -8,8 +9,11 @@ import History from "./pages/History";
 import Profile from "./pages/Profile";
 import RiskLab from "./pages/RiskLab";
 import ProtectedRoute from "./context/ProtectedRoute";
-
+import Consent from "./pages/Consent";
+import Simulation from "./pages/Simulation";
 export default function App() {
+
+
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
@@ -60,6 +64,15 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/consent"
+        element={
+          <ProtectedRoute>
+            <Consent />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/simulation" element={ <ProtectedRoute><Simulation /></ProtectedRoute>} />
     </Routes>
   );
 }

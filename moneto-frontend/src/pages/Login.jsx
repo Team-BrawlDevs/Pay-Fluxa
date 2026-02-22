@@ -2,7 +2,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate, Link } from "react-router-dom";
-
+import { hasConsent } from "../services/personaService";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,16 +10,25 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
+
+    const consent = await hasConsent(uid);
+
+    if (!consent) {
+      navigate("/consent");
+    } else {
       navigate("/dashboard");
-    } catch (err) {
-      setError(err.message);
     }
-  };
+
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
   return (
     <div className="min-h-screen flex">

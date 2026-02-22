@@ -12,6 +12,9 @@ export default function Sidebar() {
         <NavLink to="/dashboard" className={linkStyle}>
           Dashboard
         </NavLink>
+        <NavLink to="/simulation" className={linkStyle}>
+          Simulation
+        </NavLink>
         <NavLink to="/assessment" className={linkStyle}>
           Assessment
         </NavLink>

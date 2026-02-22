@@ -15,7 +15,7 @@ export default function Signup() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/dashboard");
+      navigate("/consent");
     } catch (err) {
       setError(err.message);
     }
